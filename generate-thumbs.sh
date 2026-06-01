@@ -17,7 +17,10 @@ KEYS_FILE="photo-keys.txt"
 TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT
 
-mapfile -t KEYS < <(tr '\t' '\n' < "$KEYS_FILE" | grep '^public/KCD')
+KEYS=()
+while IFS= read -r line; do
+  KEYS+=("$line")
+done < <(tr '\t' '\n' < "$KEYS_FILE" | grep '^public/KCD')
 
 total=${#KEYS[@]}
 ok=0
